@@ -77,6 +77,27 @@ The restore test confirmed:
 
 The restore test was performed manually in a separate temporary directory. Automatic restore is not part of the current script.
 
+### 7. Backup Exclusions and Retention
+
+The backup script excludes the following generated or unnecessary items from new archives:
+
+- The `.git` directory
+- Existing `.tar.gz` archive files
+- Generated `.log` files
+- `.log.bak` files
+
+These exclusions reduce repeated backup data and help keep archives focused on project files.
+
+The script applies a backup retention policy after the newly created archive passes its integrity check.
+
+- Retention limit: 7 newest `server_archive_*.tar.gz` files
+- Older matching archives are removed when the archive count exceeds seven.
+- Retention is applied only after successful archive creation and integrity verification.
+
+The latest backup was tested, the excluded file patterns were checked, and the archive was successfully restored to a separate temporary directory. The restored backup script matched the source script and passed Bash syntax validation.
+
+The deletion branch for more than seven archives has not yet been tested.
+
 ## Project Configuration
 
 The current script uses these paths:
@@ -167,7 +188,6 @@ Not yet implemented:
 - Scheduled backups using cron or a systemd timer
 - Backup encryption
 - Cloud storage integration
-- Automatic retention and deletion of old backup archives
 - Automated restore verification
 - Backup exclusions for unnecessary files and directories
 - Checksums or cryptographic integrity manifests
